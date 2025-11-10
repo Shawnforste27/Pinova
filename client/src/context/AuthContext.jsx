@@ -1,0 +1,85 @@
+import { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
+import { toast, Toaster } from "react-hot-toast";
+
+const UserContext = createContext();
+
+// ✅ Define API Base URL using environment variable
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+
+export const UserProvider = ({ children }) => {
+    const [user, setUser] = useState({});
+    const [isAuth, setIsAuth] = useState(false);
+    const [btnLoading, setBtnLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
+
+    // ✅ Register User
+    async function registerUser(name, email, password, navigate, fetchPins) {
+        setBtnLoading(true);
+        try {
+            const { data } = await axios.post(`${API_BASE_URL}/api/user/signup`, {
+                name,
+                email,
+                password,
+            });
+
+            toast.success(data.message);
+            setUser(data.user);
+            setIsAuth(true);
+            navigate("/");
+            fetchPins();
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Registration failed");
+        } finally {
+            setBtnLoading(false);
+        }
+    }
+
+    // ✅ Login User
+    async function loginUser(email, password, navigate) {
+        setBtnLoading(true);
+        try {
+            const { data } = await axios.post(`${API_BASE_URL}/api/auth/signin`, {
+                email,
+                password,
+            });
+            toast.success(data.message);
+            setUser(data.user);
+            setIsAuth(true);
+            navigate("/");
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Login failed");
+        } finally {
+            setBtnLoading(false);
+        }
+    }
+
+    // ✅ Fetch User
+    async function fetchUser() {
+        try {
+            const { data } = await axios.get(`${API_BASE_URL}/api/user/me`);
+            setUser(data.user || data);
+            setIsAuth(true);
+        } catch (error) {
+            console.log("User not authenticated:", error.message);
+            setIsAuth(false);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchUser();
+    }, []);
+
+    return (
+        <UserContext.Provider
+            value={{ loginUser, registerUser, user, isAuth, btnLoading, loading }}
+        >
+            {children}
+            <Toaster />
+        </UserContext.Provider>
+    );
+};
+
+export const UserData = () => useContext(UserContext);
