@@ -14,7 +14,7 @@ const uploadFile = require("../middleware/multer.js");
 const pinRouter = express.Router();
 
 pinRouter.post("/new", isAuth, uploadFile, createPin);
-pinRouter.get("/all", isAuth, getAllPins);
+pinRouter.get("/all",  getAllPins);
 pinRouter.get("/:id", isAuth, getSinglePin);
 pinRouter.put("/:id", isAuth, updatePin);
 pinRouter.delete("/:id", isAuth, deletePin);
