@@ -83,13 +83,12 @@ const followAndUnfollowUser = async (req, res) => {
 
 const logOutUser = async (req, res) => {
     try {
-        res.cookie("token", "", { 
-            maxAge: 0,
-            httpOnly: true,
-              secure: true
-            sameSite: "none",
-          
-        });
+       res.cookie("token", "", { 
+  maxAge: 0,
+  httpOnly: true,
+  secure: true,      
+  sameSite: "none",    
+});
         
         res.json({
             message: "Logged Out Successfully",
