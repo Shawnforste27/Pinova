@@ -15,7 +15,7 @@ export const UserProvider = ({ children }) => {
   async function registerUser(name, email, password, navigate, fetchPins) {
     setBtnLoading(true);
     try {
-      const { data } = await axios.post(`${API_BASE_URL}/api/user/signup`, {
+      const { data } = await axios.post(`${API_BASE_URL}/api/auth/signup`, {
         name,
         email,
         password,
