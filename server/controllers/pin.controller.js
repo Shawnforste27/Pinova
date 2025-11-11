@@ -3,7 +3,7 @@ const { Pin } = require("../models/pin.model.js");
 const getDataUrl = require("../utils/urlGenerator.js");
 const cloudinary = require("cloudinary").v2;
 
-// 🧩 Create a new Pin
+
 const createPin = async (req, res) => {
     try {
         const { title, pin } = req.body;
@@ -33,7 +33,7 @@ const createPin = async (req, res) => {
     }
 };
 
-// 🧩 Get all Pins
+
 const getAllPins = async (req, res) => {
     try {
         const pins = await Pin.find().sort({ createdAt: -1 });
@@ -44,7 +44,7 @@ const getAllPins = async (req, res) => {
     }
 };
 
-// 🧩 Get a single Pin
+
 const getSinglePin = async (req, res) => {
     try {
         const pin = await Pin.findById(req.params.id).populate("owner", "-password");
@@ -60,7 +60,7 @@ const getSinglePin = async (req, res) => {
     }
 };
 
-// 🧩 Add Comment on Pin
+
 const commentOnPin = async (req, res) => {
     try {
         const pin = await Pin.findById(req.params.id);
@@ -83,7 +83,7 @@ const commentOnPin = async (req, res) => {
     }
 };
 
-// 🧩 Delete Comment from Pin
+
 const deleteComment = async (req, res) => {
     try {
         const pin = await Pin.findById(req.params.id);
@@ -119,7 +119,7 @@ const deleteComment = async (req, res) => {
     }
 };
 
-// 🧩 Delete Pin
+
 const deletePin = async (req, res) => {
     try {
         const pin = await Pin.findById(req.params.id);
@@ -142,7 +142,7 @@ const deletePin = async (req, res) => {
     }
 };
 
-// 🧩 Update Pin
+
 const updatePin = async (req, res) => {
     try {
         const pin = await Pin.findById(req.params.id);
@@ -166,7 +166,7 @@ const updatePin = async (req, res) => {
     }
 };
 
-// ✅ Export all controllers
+
 module.exports = {
     createPin,
     getAllPins,
