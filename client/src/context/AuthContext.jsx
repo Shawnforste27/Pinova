@@ -21,7 +21,7 @@ export const UserProvider = ({ children }) => {
                 name,
                 email,
                 password,
-            });
+            }, { withCredentials: true });
 
             toast.success(data.message);
             setUser(data.user);
@@ -42,7 +42,7 @@ export const UserProvider = ({ children }) => {
             const { data } = await axios.post(`${API_BASE_URL}/api/auth/signin`, {
                 email,
                 password,
-            });
+            }, { withCredentials: true });
             toast.success(data.message);
             setUser(data.user);
             setIsAuth(true);
@@ -57,7 +57,7 @@ export const UserProvider = ({ children }) => {
   
     async function fetchUser() {
         try {
-            const { data } = await axios.get(`${API_BASE_URL}/api/user/me`);
+            const { data } = await axios.get(`${API_BASE_URL}/api/user/me` ,  { withCredentials: true });
             setUser(data.user || data);
             setIsAuth(true);
         } catch (error) {
