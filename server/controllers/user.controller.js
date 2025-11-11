@@ -82,15 +82,21 @@ const followAndUnfollowUser = async (req, res) => {
 
 
 const logOutUser = async (req, res) => {
-  try {
-   res.cookie("token", "", { maxAge: 0 });
-
-  res.json({
-    message: "Logged Out Successfully",
-  } catch (error) {
-    console.error("Logout error:", error);
-    return res.status(500).json({ message: error.message });
-  }
+    try {
+        res.cookie("token", "", { 
+            maxAge: 0,
+            httpOnly: true,
+            sameSite: "None",
+            secure: true
+        });
+        
+        res.json({
+            message: "Logged Out Successfully",
+        });
+    } catch (error) {
+        console.error("Logout error:", error);
+        return res.status(500).json({ message: error.message });
+    }
 };
 
 
