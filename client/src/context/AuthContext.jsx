@@ -18,10 +18,10 @@ export const UserProvider = ({ children }) => {
         setBtnLoading(true);
         try {
             const { data } = await axios.post(`${API_BASE_URL}/api/user/signup`, {
-                name,
-                email,
-                password,
-            }, { withCredentials: true });
+    name,
+    email,
+    password,
+}, { withCredentials: true });
 
             toast.success(data.message);
             setUser(data.user);
@@ -39,10 +39,10 @@ export const UserProvider = ({ children }) => {
     async function loginUser(email, password, navigate) {
         setBtnLoading(true);
         try {
-            const { data } = await axios.post(`${API_BASE_URL}/api/auth/signin`, {
-                email,
-                password,
-            }, { withCredentials: true });
+       const { data } = await axios.post(`${API_BASE_URL}/api/auth/signin`, {
+    email,
+    password,
+}, { withCredentials: true });
             toast.success(data.message);
             setUser(data.user);
             setIsAuth(true);
@@ -57,9 +57,9 @@ export const UserProvider = ({ children }) => {
   
     async function fetchUser() {
         try {
-            const { data } = await axios.get(`${API_BASE_URL}/api/user/me` ,  { withCredentials: true });
-            setUser(data.user || data);
-            setIsAuth(true);
+          const { data } = await axios.get(`${API_BASE_URL}/api/user/me`, { 
+    withCredentials: true 
+});
         } catch (error) {
             console.log("User not authenticated:", error.message);
             setIsAuth(false);
