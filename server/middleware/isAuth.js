@@ -4,11 +4,7 @@ const User = require("../models/auth.model");
 const isAuth = async (req, res, next) => {
     try {
 
-        console.log("=== LOGOUT DEBUG ===");
-        console.log("All cookies:", req.cookies);
-        console.log("Token cookie:", req.cookies.token);
-        console.log("Headers:", req.headers.cookie);
-        console.log("==================");
+      
         const token = req.cookies.token;
 
         if (!token) {
