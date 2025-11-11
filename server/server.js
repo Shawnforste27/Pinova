@@ -13,9 +13,9 @@ dotenv.config();
 
 // Cloudinary config
 cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_SECRET,
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
 });
 
 const app = express();
@@ -23,9 +23,14 @@ const PORT = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: ["https://pinova-client-v2.netlify.app", "http://localhost:5173"],
-      {  credentials: true})
+    origin: [
+      "https://pinova-client-v2.netlify.app",
+      "http://localhost:5173",
+    ],
+    credentials: true, 
+  })
 );
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -40,15 +45,15 @@ app.use("/api/pin", pinRouter);
 
 
 app.get("/", (req, res) => {
-    res.send("Backend running successfully 🚀");
+  res.send("Backend running successfully 🚀");
 });
 
 
 app.all("*", (req, res) => {
-    res.status(404).json({ message: "Route not found" });
+  res.status(404).json({ message: "Route not found" });
 });
 
 
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
