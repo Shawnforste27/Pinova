@@ -6,7 +6,7 @@ const userRouter = express.Router();
 
 
 userRouter.get("/me", isAuth, myProfile);
-userRouter.get("/logout", isAuth, logOutUser);
+userRouter.get("/logout",  logOutUser);
 userRouter.post("/follow/:id", isAuth, followAndUnfollowUser);
 
 
