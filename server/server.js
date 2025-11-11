@@ -1,4 +1,4 @@
-// server.js
+
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
@@ -21,38 +21,38 @@ cloudinary.config({
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ✅ Middlewares
+
 app.use(express.json());
 app.use(cookieParser());
 
-// ✅ CORS setup
+
 
 app.use(
     cors({
-        origin: process.env.CORS_ORIGIN || "*",
+        origin: process.env.CORS_ORIGIN ,
         credentials: true,
     })
 );
 
-// ✅ Database Connection
+
 connectDb();
 
-// ✅ Routes
+
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/pin", pinRouter);
 
-// ✅ Test Route
+
 app.get("/", (req, res) => {
     res.send("Backend running successfully 🚀");
 });
 
-// ✅ Fallback route
+
 app.all("*", (req, res) => {
     res.status(404).json({ message: "Route not found" });
 });
 
-// ✅ Server Start
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
