@@ -26,7 +26,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // ✅ CORS setup
-// Allow all origins for now (replace "*" later with your frontend URL)
+
 app.use(
     cors({
         origin: process.env.CORS_ORIGIN || "*",
