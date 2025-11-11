@@ -4,7 +4,7 @@ import { toast, Toaster } from "react-hot-toast";
 
 const UserContext = createContext();
 
-// ✅ Define API Base URL using environment variable
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
 export const UserProvider = ({ children }) => {
@@ -13,7 +13,7 @@ export const UserProvider = ({ children }) => {
     const [btnLoading, setBtnLoading] = useState(false);
     const [loading, setLoading] = useState(true);
 
-    // ✅ Register User
+
     async function registerUser(name, email, password, navigate, fetchPins) {
         setBtnLoading(true);
         try {
@@ -35,7 +35,7 @@ export const UserProvider = ({ children }) => {
         }
     }
 
-    // ✅ Login User
+ 
     async function loginUser(email, password, navigate) {
         setBtnLoading(true);
         try {
@@ -54,7 +54,7 @@ export const UserProvider = ({ children }) => {
         }
     }
 
-    // ✅ Fetch User
+  
     async function fetchUser() {
         try {
             const { data } = await axios.get(`${API_BASE_URL}/api/user/me`);
