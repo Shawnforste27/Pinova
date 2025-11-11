@@ -28,10 +28,13 @@ app.use(cookieParser());
 
 
 app.use(
-    cors({
-        origin: process.env.CORS_ORIGIN ,
-        credentials: true,
-    })
+  cors({
+    origin: [
+      "https://pinova-client-v2.netlify.app",
+      "http://localhost:5173",
+    ],
+    credentials: true,
+  })
 );
 
 
