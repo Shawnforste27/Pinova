@@ -14,17 +14,26 @@ const Account = ({ user }) => {
     const { setIsAuth, setUser } = UserData();
    
 
-    const logoutHandler = async () => {
-        try {
-            const { data } = await axios.get(`${API_BASE_URL}/api/user/logout`,{withCredentials: true});             
-      toast.success(data.message);
-      navigate("/login");
-      setIsAuth(false);
-      setUser([]);
-        } catch (error) {
-            toast.error(error.response?.data?.message || "Logout failed");
-        }
-    };
+   const logoutHandler = async () => {
+    try {
+        const { data } = await axios.get(`${API_BASE_URL}/api/user/logout`, {
+            withCredentials: true
+        });
+        
+        toast.success(data.message);
+        setIsAuth(false);
+        setUser([]);
+        navigate("/login");
+    } catch (error) {
+        console.error("Logout error:", error);
+        toast.error(error.response?.data?.message || "Logout failed");
+        
+        // Even if logout fails, clear local state and redirect
+        setIsAuth(false);
+        setUser([]);
+        navigate("/login");
+    }
+};
 
      const { pins } = PinData();
 
