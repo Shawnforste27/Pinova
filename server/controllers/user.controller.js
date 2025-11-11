@@ -82,22 +82,21 @@ const followAndUnfollowUser = async (req, res) => {
 
 
 const logOutUser = async (req, res) => {
-    try {
-        res.clearCookie("token", {
-            httpOnly: true,
-            sameSite: "strict",
-            secure: process.env.NODE_ENV === "production",
-        });
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+      secure: process.env.NODE_ENV === "production",
+    });
 
-        return res.status(200).json({
-            message: "Logged out successfully",
-        });
-    } catch (error) {
-        console.error("Logout error:", error);
-        return res.status(500).json({ message: error.message });
-    }
+    return res.status(200).json({
+      message: "Logged out successfully",
+    });
+  } catch (error) {
+    console.error("Logout error:", error);
+    return res.status(500).json({ message: error.message });
+  }
 };
-
 
 
 module.exports = { myProfile, userProfile, followAndUnfollowUser, logOutUser };
