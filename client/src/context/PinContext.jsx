@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 
 const PinContext = createContext();
 
-// ✅ Base URL from .env (local or Render)
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
 export const PinProvider = ({ children }) => {
@@ -12,7 +12,7 @@ export const PinProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [pin, setPin] = useState([]);
 
-    // ✅ Fetch all pins
+
     async function fetchPins() {
         try {
             const { data } = await axios.get(`${API_BASE_URL}/api/pin/all`);
@@ -24,7 +24,7 @@ export const PinProvider = ({ children }) => {
         }
     }
 
-    // ✅ Fetch single pin
+
     async function fetchPin(id) {
         setLoading(true);
         try {
@@ -37,7 +37,7 @@ export const PinProvider = ({ children }) => {
         }
     }
 
-    // ✅ Update pin
+   
     async function updatePin(id, title, pin, setEdit) {
         try {
             const { data } = await axios.put(`${API_BASE_URL}/api/pin/${id}`, { title, pin });
@@ -49,7 +49,7 @@ export const PinProvider = ({ children }) => {
         }
     }
 
-    // ✅ Add comment
+    
     async function addComment(id, comment, setComment) {
         try {
             const { data } = await axios.post(`${API_BASE_URL}/api/pin/comment/${id}`, { comment });
@@ -61,7 +61,7 @@ export const PinProvider = ({ children }) => {
         }
     }
 
-    // ✅ Delete comment
+   
     async function deleteComment(id, commentId) {
         try {
             const { data } = await axios.delete(
@@ -74,7 +74,7 @@ export const PinProvider = ({ children }) => {
         }
     }
 
-    // ✅ Delete pin
+
     async function deletePin(id, navigate) {
         setLoading(true);
         try {
@@ -89,7 +89,6 @@ export const PinProvider = ({ children }) => {
         }
     }
 
-    // ✅ Add new pin
     async function addPin(formData, setFilePrev, setFile, setTitle, setPin, navigate) {
         try {
             const { data } = await axios.post(`${API_BASE_URL}/api/pin/new`, formData);
