@@ -12,23 +12,26 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000
 const Account = ({ user }) => {
     const navigate = useNavigate();
     const { setIsAuth, setUser } = UserData();
-    const { pins } = PinData();
+   
 
     const logoutHandler = async () => {
         try {
-            const { data } = await axios.get(`${API_BASE_URL}/api/user/logout`,{withCredentials: true});
-            
-            
-            setIsAuth(false);
-            setUser({});
-            toast.success(data.message);
-            navigate("/login");
+            const { data } = await axios.get(`${API_BASE_URL}/api/user/logout`,{withCredentials: true});             
+      toast.success(data.message);
+      navigate("/login");
+      setIsAuth(false);
+      setUser([]);
         } catch (error) {
             toast.error(error.response?.data?.message || "Logout failed");
         }
     };
 
-    const userPins = pins?.filter((pin) => pin.owner === user._id);
+     const { pins } = PinData();
+
+  let userPins;
+
+  if (pins) {
+    userPins = pins.filter((pin) => pin.owner === user._id);
 
     const breakpointColumnsObj = {
         default: 4,
