@@ -86,8 +86,9 @@ const logOutUser = async (req, res) => {
         res.cookie("token", "", { 
             maxAge: 0,
             httpOnly: true,
+              secure: true
             sameSite: "none",
-            secure: true
+          
         });
         
         res.json({
