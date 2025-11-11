@@ -6,12 +6,12 @@ const genToken = (id, res) => {
             expiresIn: "15d",
         });
 
-        res.cookie("token", token, {
-            maxAge: 15 * 24 * 60 * 60 * 1000, // 
-            httpOnly: true,
-            sameSite: "strict",
-            secure: process.env.NODE_ENV === "production",
-        });
+     res.cookie("token", token, {
+  maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days
+  httpOnly: true,
+  sameSite: "None",  
+  secure: true,      
+});
 
         return token;
     } catch (error) {
