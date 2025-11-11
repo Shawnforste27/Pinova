@@ -24,8 +24,7 @@ const PORT = process.env.PORT || 5000;
 app.use(
   cors({
     origin: ["https://pinova-client-v2.netlify.app", "http://localhost:5173"],
-    credentials: true,
-  })
+      {  credentials: true})
 );
 app.use(cookieParser());
 app.use(express.json());
