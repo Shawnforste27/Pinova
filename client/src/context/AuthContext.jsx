@@ -82,7 +82,7 @@ export const UserProvider = ({ children }) => {
         user,
         setUser,   
         isAuth,
-        setIsAuth, /
+        setIsAuth, 
         btnLoading,
         loading,
       }}
