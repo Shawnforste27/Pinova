@@ -1,17 +1,26 @@
+// src/App.jsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import { UserData } from "./context/AuthContext";
 import { Loading } from "./components/Loading";
 import Navbar from "./components/Navbar";
 import PinPage from "./pages/PinPage";
 import Create from "./pages/Create";
 import Account from "./pages/Account";
 import UserProfile from "./pages/UserProfile";
+import { fetchUser } from "./redux/slices/authSlice";
 
 const App = () => {
-  const { loading, isAuth, user } = UserData();
+  const dispatch = useDispatch();
+  const { loading, isAuth, user } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, [dispatch]);
 
   return (
     <>
@@ -19,11 +28,11 @@ const App = () => {
         <Loading />
       ) : (
         <BrowserRouter>
-          {/* ✅ Show navbar only when logged in */}
+
           {isAuth && <Navbar user={user} />}
 
           <Routes>
-            {/* ✅ Protected routes */}
+
             <Route path="/" element={isAuth ? <Home /> : <Login />} />
             <Route
               path="/account"
@@ -42,7 +51,7 @@ const App = () => {
               element={isAuth ? <PinPage user={user} /> : <Login />}
             />
 
-            {/* ✅ Public routes */}
+
             <Route
               path="/login"
               element={isAuth ? <Home /> : <Login />}
@@ -52,11 +61,12 @@ const App = () => {
               element={isAuth ? <Home /> : <Register />}
             />
 
-            {/* ✅ Optional fallback */}
+
             <Route path="*" element={<Login />} />
           </Routes>
         </BrowserRouter>
       )}
+      <Toaster />
     </>
   );
 };

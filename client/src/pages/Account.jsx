@@ -1,40 +1,18 @@
-
-
+// src/pages/Account.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { PinData } from "../context/PinContext";
-import { UserData } from "../context/AuthContext";
-import axios from "axios";
-import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../redux/slices/authSlice";
 import PinCard from "../components/PinCard";
 import Masonry from "react-masonry-css";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
-
 const Account = ({ user }) => {
   const navigate = useNavigate();
-  const { setIsAuth, setUser } = UserData(); 
-  const { pins } = PinData();
+  const dispatch = useDispatch();
+  const { pins } = useSelector((state) => state.pin);
 
   const logoutHandler = async () => {
-    try {
-      const { data } = await axios.get(`${API_BASE_URL}/api/user/logout`, {
-        withCredentials: true,
-      });
-
-      toast.success(data.message);
-
-      setIsAuth(false);
-      setUser({});
-      navigate("/login");
-    } catch (error) {
-      console.error("Logout error:", error);
-      toast.error(error.response?.data?.message || "Logout failed");
-
-      setIsAuth(false);
-      setUser({});
-      navigate("/login");
-    }
+    dispatch(logoutUser({ navigate }));
   };
 
   let userPins;

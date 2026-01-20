@@ -1,10 +1,14 @@
+// src/pages/Create.jsx
 import React, { useRef, useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import { PinData } from "../context/PinContext";
+import { useDispatch } from "react-redux";
+import { addPin } from "../redux/slices/pinSlice";
 import { useNavigate } from "react-router-dom";
 
 const Create = () => {
     const inputRef = useRef(null);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleClick = () => {
         inputRef.current.click();
@@ -14,7 +18,6 @@ const Create = () => {
     const [filePrev, setFilePrev] = useState("");
     const [title, setTitle] = useState("");
     const [pin, setPin] = useState("");
-    const { addPin } = PinData();
 
     const changeFileHandler = (e) => {
         const file = e.target.files[0];
@@ -28,19 +31,26 @@ const Create = () => {
         };
     };
 
-    const navigate = useNavigate();
-
     const addPinHandler = (e) => {
         e.preventDefault();
 
         const formData = new FormData();
-
         formData.append("title", title);
         formData.append("pin", pin);
         formData.append("file", file);
 
-        addPin(formData, setFilePrev, setFile, setTitle, setPin, navigate);
+        dispatch(
+            addPin({
+                formData,
+                setFilePrev,
+                setFile,
+                setTitle,
+                setPin,
+                navigate,
+            })
+        );
     };
+
     return (
         <div>
             <div className="flex flex-wrap justify-center items-center gap-2 mt-10">

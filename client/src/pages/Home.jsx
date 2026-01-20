@@ -1,11 +1,18 @@
-import React from "react";
+// src/pages/Home.jsx
+import React, { useEffect } from "react";
 import Masonry from "react-masonry-css";
-import { PinData } from "../context/PinContext";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPins } from "../redux/slices/pinSlice";
 import { Loading } from "../components/Loading";
 import PinCard from "../components/PinCard";
 
 const Home = () => {
-    const { pins, loading } = PinData();
+    const dispatch = useDispatch();
+    const { pins, loading } = useSelector((state) => state.pin);
+
+    useEffect(() => {
+        dispatch(fetchPins());
+    }, [dispatch]);
 
     const breakpointColumnsObj = {
         default: 4,

@@ -1,23 +1,24 @@
+// src/pages/UserProfile.jsx
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import PinCard from "../components/PinCard";
-import { PinData } from "../context/PinContext";
-import { UserData } from "../context/AuthContext";
+import { followUser } from "../redux/slices/authSlice";
 import Masonry from "react-masonry-css";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
 const UserProfile = ({ user: loggedInUser }) => {
     const params = useParams();
+    const dispatch = useDispatch();
+    const { pins } = useSelector((state) => state.pin);
     const [user, setUser] = useState({});
     const [isFollow, setIsFollow] = useState(false);
-    const { followUser } = UserData();
-    const { pins } = PinData();
 
-    async function fetchUser() {
+    async function fetchUserProfile() {
         try {
-            const { data } = await xios.get(`${API_BASE_URL}/api/user/${params.id}`);
+            const { data } = await axios.get(`${API_BASE_URL}/api/user/${params.id}`);
             setUser(data.user);
         } catch (error) {
             console.log(error);
@@ -25,16 +26,16 @@ const UserProfile = ({ user: loggedInUser }) => {
     }
 
     useEffect(() => {
-        fetchUser();
+        fetchUserProfile();
     }, [params.id]);
 
     useEffect(() => {
         if (user?.followers?.includes(loggedInUser._id)) setIsFollow(true);
-    }, [user]);
+    }, [user, loggedInUser._id]);
 
     const followHandler = () => {
         setIsFollow(!isFollow);
-        followUser(user._id, fetchUser);
+        dispatch(followUser({ userId: user._id, fetchUserCallback: fetchUserProfile }));
     };
 
     const userPins = pins?.filter((pin) => pin.owner === user._id);

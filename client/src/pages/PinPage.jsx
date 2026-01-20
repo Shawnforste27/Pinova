@@ -1,26 +1,32 @@
+// src/pages/PinPage.jsx
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { PinData } from "../context/PinContext";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    fetchPin,
+    updatePin,
+    addComment,
+    deleteComment,
+    deletePin,
+} from "../redux/slices/pinSlice";
 import { Loading } from "../components/Loading";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 
 const PinPage = ({ user }) => {
     const params = useParams();
-
-    const {
-        loading,
-        fetchPin,
-        pin,
-        updatePin,
-        addComment,
-        deleteComment,
-        deletePin,
-    } = PinData();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { loading, pin } = useSelector((state) => state.pin);
 
     const [edit, setEdit] = useState(false);
     const [title, setTitle] = useState("");
     const [pinValue, setPinValue] = useState("");
+    const [comment, setComment] = useState("");
+
+    useEffect(() => {
+        dispatch(fetchPin(params.id));
+    }, [params.id, dispatch]);
 
     const editHandler = () => {
         setTitle(pin.title);
@@ -29,31 +35,23 @@ const PinPage = ({ user }) => {
     };
 
     const updateHandler = () => {
-        updatePin(pin._id, title, pinValue, setEdit);
+        dispatch(updatePin({ id: pin._id, title, pin: pinValue, setEdit }));
     };
-
-    const [comment, setComment] = useState("");
 
     const submitHandler = (e) => {
         e.preventDefault();
-        addComment(pin._id, comment, setComment);
+        dispatch(addComment({ id: pin._id, comment, setComment }));
     };
 
-    const deleteCommentHander = (id) => {
+    const deleteCommentHandler = (id) => {
         if (confirm("Are you sure you want to delete this comment"))
-            deleteComment(pin._id, id);
+            dispatch(deleteComment({ id: pin._id, commentId: id }));
     };
-
-    const navigate = useNavigate();
 
     const deletePinHandler = () => {
         if (confirm("Are you sure you want to delete this pin"))
-            deletePin(pin._id, navigate);
+            dispatch(deletePin({ id: pin._id, navigate }));
     };
-
-    useEffect(() => {
-        fetchPin(params.id);
-    }, [params.id]);
 
     return (
         <div>
@@ -178,7 +176,10 @@ const PinPage = ({ user }) => {
                                 <div className="overflow-y-auto h-64">
                                     {pin.comments && pin.comments.length > 0 ? (
                                         pin.comments.map((e, i) => (
-                                            <div className="flex items-center justify-between mb-4">
+                                            <div
+                                                key={i}
+                                                className="flex items-center justify-between mb-4"
+                                            >
                                                 <div className="flex items-center mb-4 justify-center gap-3">
                                                     <Link to={`/user/${e.user}`}>
                                                         <div className="rounded-full h-12 w-12 bg-gray-300 flex items-center justify-center">
@@ -199,7 +200,7 @@ const PinPage = ({ user }) => {
 
                                                     {e.user === user._id && (
                                                         <button
-                                                            onClick={() => deleteCommentHander(e._id)}
+                                                            onClick={() => deleteCommentHandler(e._id)}
                                                             className="bg-red-500 text-white py-1 px-3 rounded"
                                                         >
                                                             <MdDelete />
